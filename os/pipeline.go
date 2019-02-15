@@ -32,7 +32,6 @@ func anonymousPipeline(cmd1 *exec.Cmd, cmd2 *exec.Cmd) {
 	fmt.Printf("cmd2: %s\n", string(cmd2Output.String()))
 }
 
-
 func fileBasedPipe() {
 	reader, writer, err := os.Pipe()
 	if err != nil {

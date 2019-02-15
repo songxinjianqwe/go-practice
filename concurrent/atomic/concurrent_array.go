@@ -14,7 +14,7 @@ type ConcurrentArray interface {
 
 type ConcurrentArrayImpl struct {
 	length uint32
-	val atomic.Value
+	val    atomic.Value
 }
 
 func (this *ConcurrentArrayImpl) Set(index uint32, element int) error {
@@ -42,7 +42,6 @@ func (this *ConcurrentArrayImpl) Get(index uint32) (elem int, err error) {
 	return elem, err
 }
 
-
 func (this *ConcurrentArrayImpl) Len() uint32 {
 	return this.length
 }
@@ -58,12 +57,9 @@ func (this *ConcurrentArrayImpl) checkValue() error {
 
 }
 
-
-
 func NewConcurrentArray(length uint32) ConcurrentArray {
 	array := ConcurrentArrayImpl{}
 	array.length = length
 	array.val.Store(make([]int, array.length))
 	return array
 }
-

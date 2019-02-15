@@ -8,7 +8,6 @@ type Runnable interface {
 	Run()
 }
 
-
 type GoroutinePool struct {
 	workQueue chan Runnable
 	waitGroup sync.WaitGroup
@@ -19,7 +18,7 @@ func NewGoroutinePool(maxPoolSize int) *GoroutinePool {
 		workQueue: make(chan Runnable),
 	}
 	pool.waitGroup.Add(maxPoolSize)
-	for i := 0; i < maxPoolSize ; i++  {
+	for i := 0; i < maxPoolSize; i++ {
 		go func() {
 			for runnable := range pool.workQueue {
 				runnable.Run()
@@ -30,12 +29,11 @@ func NewGoroutinePool(maxPoolSize int) *GoroutinePool {
 	return &pool
 }
 
-func (this* GoroutinePool) Run(r Runnable) {
+func (this *GoroutinePool) Run(r Runnable) {
 	this.workQueue <- r
 }
 
-func (this* GoroutinePool) ShutDown() {
+func (this *GoroutinePool) ShutDown() {
 	close(this.workQueue)
 	this.waitGroup.Wait()
 }
-
