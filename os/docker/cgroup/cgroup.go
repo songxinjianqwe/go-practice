@@ -18,12 +18,10 @@ func main() {
 	// 其中/proc/self指的是当前运行进程自己的环境，exec其实就是自己调用了自己，我们使用这种方式实现对创建出来的进程进行初始化
 	if os.Args[0] == "/proc/self/exe" {
 		fmt.Printf("current pid %d\n", syscall.Getpid())
-		cmd := exec.Command("sh", "-c", `stress --vm-bytes 200m --vm-keep -m 1`)
-		cmd.SysProcAttr = &syscall.SysProcAttr{}
-		cmd.Stdin = os.Stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		if err := cmd.Run(); err != nil {
+		name, _ := exec.LookPath("stress")
+		err := syscall.Exec(name, []string{"stress", "--vm-bytes", "256m", "--vm-keep", "-m", "1"},
+			os.Environ())
+		if err != nil {
 			log.Fatal(err)
 		}
 	}
